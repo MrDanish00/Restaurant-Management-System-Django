@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout 
-from .forms import SignUpForm
+from .forms import CustomUserCreationForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-
+from django.contrib import messages
+from django.db import IntegrityError
 def home(request):
     return render(request, 'index.html')
 
@@ -16,67 +17,58 @@ def home_view(request):
 def contact(request):
     return render(request, 'contact.html')
 
-def services(request):
-    return render(request, 'service.html')
-
 def menu(request):
     return render(request, 'menu.html')
+
 def signup_page(request):
     return render(request, 'signup.html')
 
-
 def login_page(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('home')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'login.html')
 
 def signup_view(request):
     if request.method == 'POST':
-        form = SignUpForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('home')
+            try:
+                form.save()
+                messages.success(request, 'Account created successfully!')
+                return redirect('login')
+            except IntegrityError:
+                messages.error(request, "Username already taken. Please choose a different username")
+        else:
+            messages.error(request, 'Signup failed. Please check the errors.')
     else:
-        form = SignUpForm()
+        form = CustomUserCreationForm()
     return render(request, 'signup.html', {'form': form})
 
-def logout_view(request):
-    logout(request)
-    return redirect('login')
 
-
-class CustomUserCreationForm(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
-        model = User
-        fields = ("username", "email", "password1", "password2")
-
-def login_signup_view(request):
-    signup_form = CustomUserCreationForm()
-    login_form = AuthenticationForm(request, data=request.POST or None)
-
+def login_view(request):
     if request.method == 'POST':
-        if 'signup' in request.POST:
-            signup_form = CustomUserCreationForm(request.POST)
-            if signup_form.is_valid():
-                user = signup_form.save()
-                login(request, user)
-                return redirect('home')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
 
-        elif 'login' in request.POST:
-            login_form = AuthenticationForm(request, data=request.POST)
-            if login_form.is_valid():
-                user = login_form.get_user()
+        try:
+            user_obj = User.objects.get(email=email)
+            username = user_obj.username
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
                 login(request, user)
-                return redirect('home')
+                messages.success(request, 'Successfully logged in!')
+                return redirect('home')  # ✅ Redirect to home page
 
-    return render(request, 'login_signup.html', {
-        'signup_form': signup_form,
-        'login_form': login_form,
-    })
+            else:
+                messages.error(request, 'Invalid email or password.')  # ❌ RED message
+        except User.DoesNotExist:
+            messages.error(request, 'No user with that email.')  # ❌ RED message
+
+    return render(request, 'login.html')
+
+def logout_view(request):
+    # Only accept POST for logout (more secure than GET)
+    if request.method == 'POST':
+        logout(request)  
+        messages.success(request, "You’ve been logged out successfully.")
+        return redirect('home')  # or wherever you want
+    # If someone GETs this URL, just send them home (or login)
+    return redirect('home')

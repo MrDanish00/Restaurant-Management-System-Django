@@ -25,13 +25,9 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
-    path('services/', views.services, name='services'),
     path('menu/', views.menu, name='menu'),
-    path('login/', views.login_page, name='login'),
-    path('logout/', views.logout_view, name='logout'),
-    path('', include('myapp.urls')),    
-    path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
-
-
+    # path('login/', views.login_page, name='login'),
+    path('', include('myapp.urls')),
+    
 ]
 
