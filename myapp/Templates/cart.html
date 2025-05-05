@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="{% static 'css/cart.css' %}" rel="stylesheet">
+</head>
+<body>
+  <br><div class="brand-header">
+    <h1 class="text-primary">&#127869; Foodly</h1>
+</div>
+<div class="cart-items">
+  {% for cart_item in cart_items %}
+  <div class="cart-item">
+      <img src="{{ cart_item.product.image.url }}" alt="{{ cart_item.product.name }}">
+      <span class="item-name">{{ cart_item.product.name }}</span>
+      <span class="item-qty">Qty: {{ cart_item.quantity }}</span>
+      <span class="item-price">PKR {{ cart_item.product.price }}</span>
+  </div>
+  {% comment %} {% empty %}
+  <p>Your cart is currently empty.</p> {% endcomment %}
+  {% endfor %}
+</div>
+
+
+
+<form method="POST" action="{% url 'place_order' %}">
+  {% csrf_token %}
+  <input type="text" name="name" placeholder="Your Name" required><br>
+  <input type="text" name="phone" placeholder="Phone Number" required><br>
+  <input type="text" name="address" placeholder="Shipping Address" required><br>
+  <select name="payment_method" required>
+    <option value="Cash on Delivery">Cash on Delivery</option>
+    <option value="Card">Card</option>
+  </select><br>
+  <button type="submit">Confirm Order</button>
+</form>
+
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/order_confirmation.css' %}">
+
+</head>
+<body>
+    <div class="brand-header">
+        <h1 class="text-primary">&#127869; Foodly</h1>
+    </div>
+    <div class="order-summary">
+        <h3>Order Summary</h3>
+    
+        <div class="customer-details">
+            <p><strong>Name:</strong> {{ name }}</p>
+            <p><strong>Phone:</strong> {{ phone }}</p>
+            <p><strong>Address:</strong> {{ address }}</p>
+            <p><strong>Payment Method:</strong> {{ payment_method }}</p>
+        </div>
+    
+        <div class="cart-items">
+            {% for cart_item in cart_items %}
+                <div class="item">
+                    <span>{{ cart_item.product.name }}</span>
+                    <span>Quantity: {{ cart_item.quantity }}</span>
+                    <span>Price: PKR {{ cart_item.product.price }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    
+        <div class="total">
+            Total: PKR {{ total_amount }}
+        </div>
+        <div class="thank-you">
+            <h2>Thank you for your order!</h2>
+            <a href="{% url 'home' %}" class="home-link">Back to Home</a>
+        </div>
+        
+
+    </div>
+    
+    
+    
+    
+    
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #F1F8FF;
+    color: #0F172B;
+    margin: 0;
+    padding: 40px 20px;
+}
+.brand-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.brand-header h1 {
+    color: #FEA116;
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.order-summary {
+    max-width: 600px;
+    margin: auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+.order-summary h3 {
+    color: #FEA116;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+}
+
+/* Customer Details */
+.order-summary .customer-details {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.order-summary .customer-details p {
+    margin: 8px 0;
+    font-size: 1rem;
+}
+
+.order-summary .customer-details strong {
+    color: #0F172B;
+}
+
+/* Cart Items */
+.order-summary .cart-items {
+    margin-bottom: 20px;
+}
+
+.order-summary .cart-items .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.order-summary .cart-items .item:last-child {
+    border-bottom: none;
+}
+
+.order-summary .cart-items .item span {
+    flex: 1;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.order-summary .cart-items .item span:first-child {
+    text-align: left;
+    font-weight: 600;
+    color: #0F172B;
+}
+
+/* Total Amount */
+.order-summary .total {
+    text-align: right;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 15px;
+    color: #0F172B;
+    border-top: 1px solid #ddd;
+    padding-top: 15px;
+}
+
+/* Additional Notes */
+.order-summary .notes {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.order-summary .notes p {
+    margin: 6px 0;
+    font-size: 1rem;
+}
+
+.order-summary .notes strong {
+    color: #0F172B;
+}
+.home-link {
+    display: inline-block;
+    background-color: #FEA116;
+    color: white;
+    padding: 10px 20px;
+    margin-top: 20px;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.home-link:hover {
+    background-color: #e28e00;
+}
+
