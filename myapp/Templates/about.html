@@ -64,6 +64,7 @@
                         <a href="{% url 'about' %}" class="nav-item nav-link active">About</a>
                         <a href="{% url 'menu' %}" class="nav-item nav-link">Menu</a>
                         <a href="{% url 'contact' %}" class="nav-item nav-link">Contact</a>
+                        <a href="{% url 'order_history' %}" class="nav-item nav-link">Order History</a>
                     </div>
                     {% if user.is_authenticated %}
         <form method="post" action="{% url 'logout' %}" style="display:inline">

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History | Foodly</title>
+    <link href="{% static 'Media/img/favicon.ico' %}" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&family=Pacifico&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body>
+    <div class="position-relative p-0">
+        <!-- Navbar Start -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
+            <a href="{% url 'home' %}" class="navbar-brand p-0">
+                <h1 class="text-primary m-0">&#127869; Foodly</h1>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="fa fa-bars"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto py-0 pe-4">
+                    <a href="{% url 'home' %}" class="nav-item nav-link">Home</a>
+                    <a href="{% url 'about' %}" class="nav-item nav-link">About</a>
+                    <a href="{% url 'menu' %}" class="nav-item nav-link">Menu</a>
+                    <a href="{% url 'contact' %}" class="nav-item nav-link">Contact</a>
+                    <a href="{% url 'order_history' %}" class="nav-item nav-link active">Order History</a>
+                </div>
+                {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'logout' %}" class="d-inline ms-2">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-light">Log Out</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-outline-light ms-2">Log In</a>
+                {% endif %}
+            </div>
+        </nav>
+        <!-- Navbar End -->
+        <br><br><br>
+        <!-- Order History Section -->
+        <div class="container my-5">
+            <h2 class="text-center mb-4">Your Order History</h2>
+            {% if orders %}
+                {% for order in orders %}
+                    <div class="order-card border p-3 mb-3 rounded shadow-sm">
+                        <p><strong>Order ID:</strong> {{ order.id }}</p>
+                        <p><strong>User:</strong> {{ order.user }}</p>
+                        <p><strong>Items:</strong></p>
+                        <ul>
+                        {% for item in order.items.all %}
+                        <li>{{ item.product }} — Qty: {{ item.quantity }} — PKR {{ item.product.price }}</li>
+                        {% empty %}
+                        <li>No items found for this order.</li>
+                        {% endfor %}
+                        </ul>
+
+                        <p><strong>Total:</strong> PKR {{ order.amount_to_pay }}</p>
+                        <p><strong>Date:</strong> {{ order.ordered_date }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center">No past orders found.</p>
+            {% endif %}
+        </div>
+        <!-- Order History Section End -->
+
+        <!-- Footer Start -->
+        <div class="container-fluid bg-dark text-light footer pt-5 mt-5">
+            <div class="container py-5">
+                <div class="row g-5">
+                    <div class="col-lg-3 col-md-6">
+                        <h4 class="text-primary fw-normal mb-4">Company</h4>
+                        <a class="btn btn-link text-light" href="#">About Us</a>
+                        <a class="btn btn-link text-light" href="#">Contact Us</a>
+                        <a class="btn btn-link text-light" href="#">Reservation</a>
+                        <a class="btn btn-link text-light" href="#">Privacy Policy</a>
+                        <a class="btn btn-link text-light" href="#">Terms & Condition</a>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h4 class="text-primary fw-normal mb-4">Contact</h4>
+                        <p><i class="fa fa-map-marker-alt me-2"></i>12-A Model Town, Lahore</p>
+                        <p><i class="fa fa-phone-alt me-2"></i>+92 301 6789012</p>
+                        <p><i class="fa fa-envelope me-2"></i>foodly@gmail.com</p>
+                        <div class="d-flex pt-2">
+                            <a class="btn btn-outline-light btn-social me-2" href="#"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-light btn-social me-2" href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-light btn-social me-2" href="#"><i class="fab fa-youtube"></i></a>
+                            <a class="btn btn-outline-light btn-social" href="#"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h4 class="text-primary fw-normal mb-4">Opening</h4>
+                        <h5 class="text-light fw-normal">Mon - Sat</h5>
+                        <p>09AM - 09PM</p>
+                        <h5 class="text-light fw-normal">Sunday</h5>
+                        <p>10AM - 08PM</p>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h4 class="text-primary fw-normal mb-4">Newsletter</h4>
+                        <p>Subscribe to stay updated with our latest offers and deals.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom Script -->
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

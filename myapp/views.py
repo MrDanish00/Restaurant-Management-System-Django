@@ -9,6 +9,17 @@ from django.db import IntegrityError
 from .models import Product, OrderItem, Order
 from django.template.loader import render_to_string
 from django.db import transaction
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import json
+from django.views.decorators.http import require_POST
+from django.middleware.csrf import get_token
+from django.contrib.auth.decorators import login_required
+
+
+
+
+from django.shortcuts import redirect
 def home(request):
     return render(request, 'index.html')
 
@@ -29,6 +40,11 @@ def menu(request):
 
 def signup_page(request):
     return render(request, 'signup.html')
+@login_required
+def order_history(request):
+    orders = Order.objects.filter(user=request.user).order_by('-ordered_date')
+    return render(request, 'order_history.html', {'orders': orders})
+
 def order_confirmation(request):
     return render(request, 'order_confirmation.html')
 
@@ -81,21 +97,6 @@ def logout_view(request):
         return redirect('home')  
     return redirect('home')
 
-
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
-import json
-
-from django.views.decorators.http import require_POST
-from django.middleware.csrf import get_token
-
-from django.contrib.auth.decorators import login_required
-
-
-
-
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect
 
 @login_required
 def add_to_cart(request, product_id):

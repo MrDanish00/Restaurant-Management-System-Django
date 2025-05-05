@@ -329,3 +329,11 @@ body{
     padding-right: 0;
     border-right: none;
 }
+.order-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 15px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
